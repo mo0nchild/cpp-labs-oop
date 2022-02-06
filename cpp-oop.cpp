@@ -1,8 +1,7 @@
 ﻿#define _USE_MATH_DEFINES
+
 #include <iostream>
 #include <locale>
-
-
 #include <cmath>
 
 using namespace std;
@@ -43,29 +42,20 @@ namespace task2
 	{
 		double current_state = 0, iter, sum = 0;
 
-		auto my_pow = [&](double x, int n)
-		{
-			double result = 1;
-			for (int i = 0; i < n; i++) result *= x;
-			
-			return result;
-		};
-
 		for (int n = 1; true; n++)
 		{
-			iter = (n % 2 == 0 ? -1 : 1) * (my_pow(x, 2 * n - 1) / (2 * n - 1));
+
+			iter = pow(-1., n-1) * (pow(x, 2. * n - 1) / (2. * n - 1));
 			sum += iter;
+
 			if (current_state != 0)
 			{
-				if (fabs(current_state - iter) <= EBSILON)
-				{
-					return sum;
-				}
+				if (fabs(current_state - iter) <= EBSILON) break;
 			}
 			current_state = iter;
-
-			if (n >= stack_without_fall) return 'a';
+			//if (n >= stack_without_fall) return 0;
 		}
+		return sum;
 	}
 
 	bool run(void)
@@ -82,35 +72,167 @@ namespace task2
 
 		catch (std::exception ex)
 		{
+			
 			return false;
+			
 		}
+
 		return true;
 	}
 }
 
 namespace task3 
 {
-	void task1() 
+	void task1(void) 
 	{
-		const int n = 10;
+		cout << "Введите n: ";
+		int n;
+		cin >> n;
+
+		cout << "Вывод: ";
 		for(int i = 1; i < n ;i++)
 		{
-			if (n % i == 0) cout << i << endl;
+			if (n % i == 0) cout << i << " ,\t";
 		}
+		cout << endl;
 	}
 
-	void task2()
+	void task2(void)
 	{
-		int i, fn, n, y;
+		int i, fn = 1, n, y = 1;
+		cout << "Введите n: ";
+		cin >> n;
 
 
+		int delta = (n % 2 != 0) ? 1 : 2;
+
+		for (int i = delta; i <= n; i += delta)
+		{
+			fn *= i;
+		}
+		
+		cout << "Вывод: " << fn << endl;
+
+	}
+
+	void task3(void) 
+	{
+		double fn = 1;
+		int n;
+
+		cout << "Введите n: ";
+		cin >> n;
+
+		double up = 2, down = 1;
+		for (int i = 1; i <= n; i++) 
+		{
+			fn *= (up / down);
+
+			if (i % 2 == 0) up += 2;
+			else down += 2;
+		}
+
+		cout << "Вывод: " << fn << endl;
+	}
+
+	void task4(void) 
+	{
+		int n, j;
+		double s = 0, x;
+
+		cout << "Введите n: ";
+		cin >> n;
+		cout << "Введите x: ";
+		cin >> x;
+
+		for (double k = 1; k < n; k++) 
+		{
+			for (double m = k; m < n; m++) 
+			{
+				s += (x + k) / m;
+			}
+		}
+
+		cout << "Вывод: " << s << endl;
+	}
+
+	void task5(void)
+	{
+		int n, j;
+		double s = 0, x;
+
+		cout << "Введите n: ";
+		cin >> n;
+		cout << "Введите x: ";
+		cin >> x;
+
+		for (double i = 1; i < n; i++)
+		{
+			for (double j = 1; j < i; j++)
+			{
+				s += (1.) / (i + 2 * j);
+			}
+		}
+
+		cout << "Вывод: " << s << endl;
+	}
+
+#define MAX_GENERATE 1000
+#define MIN_GENERATE 100
+
+	void task6(void)
+	{
+		srand(time(0));
+		double arr[200];
+
+		for (int i = 0; i < 200; i++) 
+		{
+			arr[i] = (double)(MIN_GENERATE + rand() % (MAX_GENERATE + 1))
+				/ (double)(MIN_GENERATE + rand() % (MAX_GENERATE + 1));
+			cout << arr[i] << "\t";
+		}
+		cout << endl;
+
+		int counter = 0;
+		for (int i = 1; i < 199; i++) 
+		{
+			if (arr[i - 1] < arr[i] && arr[i] > arr[i + 1]) counter++;
+		}
+
+		cout << "Вывод: " << counter << endl;
+	}
+
+	void task7(void)
+	{
+		double P = 1;
+		for (double i = 1; i < 20; i++) 
+		{
+			for (double j = 1; j < 20; j++)
+			{
+				P *= 1. / (i + j * j);
+				cout << P << " ";
+			}
+		}
+		cout << endl;
+		cout << "Вывод: " << P << endl;
 	}
 
 	bool run(void)
 	{
 		try
 		{
-			task1();
+			void (*tasks[7])(void) = { task1, task2, task3, task4, task5, task6, task7 };
+
+			cout << "Введите номер задания с ошибкой (1-7): ";
+			int n;
+			cin >> n;
+			if (--n < 0 || n > 6) 
+			{
+				cout << "Задание не найдено" << endl;
+				throw std::exception("not found");
+			}
+
+			tasks[n]();
 		}
 		catch (std::exception ex)
 		{
@@ -127,7 +249,7 @@ namespace task4
 		try
 		{
 			int n;
-			cout << "Введите числа: ";
+			cout << "Введите число: ";
 			cin >> n;
 
 			if (n > 0) cout << "Число положительное" << endl;
@@ -152,7 +274,6 @@ void lab(void)
 
 	while (1)
 	{
-		cin.clear();
 		int task_number = -1;
 		cout << endl
 			<< "1 - Проверка Задачи 1\n"
@@ -168,25 +289,23 @@ void lab(void)
 		{
 		case 1:
 			error_handler = task1::run();
-
 			break;
 
 		case 2:
 			error_handler = task2::run();
-
 			break;
 
 		case 3:
 			error_handler = task3::run();
-
 			break;
 
 		case 4:
 			error_handler = task4::run();
-
 			break;
 
-		case 5: exit_trigger = true; break;
+		case 5: 
+			exit_trigger = true; 
+			break;
 
 		default:cout << "Неверный ввод" << endl;
 
@@ -198,21 +317,10 @@ void lab(void)
 	}
 }
 
-
-#include "labs/lab1/lab1.h"
-using lab1::task_runner;
-
 int main(void)
 {
 	setlocale(LC_ALL, "rus");
-	
-	task_runner *runner = new task_runner(new lab1::task1());
-	runner->start();
-
-	*runner = *runner << task_runner(new lab1::task2());
-	runner->start();
-
-	delete runner;
+	lab();
 
 	return 0;
 }

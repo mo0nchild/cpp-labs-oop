@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cpp-oop.cpp" />
+    <ClCompile Include="labs\lab1\lab1.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="labs\lab1\lab1.h" />
