@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 
+
 namespace lab3 // https://youtu.be/IKJHMhtMnR0
 {
 	using namespace std;

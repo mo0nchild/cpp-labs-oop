@@ -12,6 +12,7 @@
 #define MAX_GENERATE 1000
 #define MIN_GENERATE 100
 
+
 namespace lab1 
 {
 	using namespace std;

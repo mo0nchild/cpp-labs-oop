@@ -7,6 +7,7 @@
 #define MAX_ARR_VALUE 10
 #define MIN_ARR_VALUE -5
 
+
 namespace lab2
 {
 	using namespace std;

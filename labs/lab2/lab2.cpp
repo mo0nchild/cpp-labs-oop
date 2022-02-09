@@ -1,6 +1,7 @@
 #include "lab2.h"
 using namespace lab2;
 
+
 double* task1::generate_arr(double* arr, int n)
 {
 	for (int i = 0; i < n; i++)

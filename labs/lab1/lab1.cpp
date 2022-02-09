@@ -1,6 +1,7 @@
 #include "lab1.h"
 using namespace lab1;
 
+
 double task1::function(double a, double b)
 {
 	return atan((sin(pow(a, 2.)) + pow(b, 3.)) / sqrt(1. + (b) / (a + cos(M_PI * pow(b, 2.)))));

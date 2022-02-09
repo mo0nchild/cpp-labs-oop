@@ -1,6 +1,7 @@
 #include "lab3.h"
 using namespace lab3;
 
+
 SquareMatrix::SquareMatrix(int size)
 {
 	for (int i = 0; i < size; i++)
