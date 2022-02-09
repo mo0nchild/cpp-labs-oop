@@ -141,9 +141,13 @@
   <ItemGroup>
     <ClCompile Include="cpp-oop.cpp" />
     <ClCompile Include="labs\lab1\lab1.cpp" />
+    <ClCompile Include="labs\lab2\lab2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="labs\lab1\lab1.h" />
+    <ClInclude Include="labs\lab2\lab2.h" />
+    <ClInclude Include="labs\lab3\lab3.h" />
+    <ClInclude Include="labs\lab4\lab4.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
