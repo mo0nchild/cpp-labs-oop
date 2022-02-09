@@ -5,53 +5,27 @@
 namespace lab3 // https://youtu.be/IKJHMhtMnR0
 {
 	using namespace std;
-
 	enum class direction { right_direction = 0, down_direction };
+
 	using matrix_t = vector<vector<double>>;
 	
-	struct SquareMatrix 
+	matrix_t create_matrix(int size)
 	{
-	private:
-		matrix_t matrix;
-
-	public:
-		SquareMatrix(int size)
+		matrix_t result;
+		for (int i = 0; i < size; i++)
 		{
-			for (int i = 0; i < size; i++)
-			{
-				matrix.push_back(vector<double>());
-				for (int k = 0; k < size; k++) matrix[i].push_back(double(0));
-			}
+			result.push_back(vector<double>());
+			for (int k = 0; k < size; k++) result[i].push_back(double(0));
 		}
+		return result;
+	}
 
-		// методы доступа
-		int size() { return matrix.size(); }
-		double& get_cell(int x, int y) 
-		{
-			if ((x < matrix.size() && x >= 0) && (y < matrix.size() && y >= 0))
-			{
-				return matrix[y][x];
-			}
-			throw std::out_of_range("indexs_out_of_range");
-		}
-
-		static void print_matrix(SquareMatrix& matrix)
-		{
-			for (int i = 0; i < matrix.size(); i++) 
-			{
-				for (int k = 0; k < matrix.size(); k++) cout << matrix.get_cell(k, i) << "\t";
-				cout << endl << endl;
-			}
-		}
-
-	};
-
-	SquareMatrix fill_matrix(SquareMatrix& matrix, int size)
+	matrix_t fill_matrix(matrix_t& matrix, int size)
 	{
 		double counter = 1;
 
 		// установка значения для нулевой клетки (х = 0; у = 0)
-		matrix.get_cell(0, 0) = counter++;
+		matrix[0][0] = counter++;
 		// установка начального навравления = направо
 		direction dir(direction::right_direction);
 
@@ -62,14 +36,14 @@ namespace lab3 // https://youtu.be/IKJHMhtMnR0
 			if (x < size - 1 && dir == direction::right_direction) 
 			{
 				// смещение курсора вправо и установка значения клетки
-				matrix.get_cell(++x, y) = counter++;
+				matrix[y][++x] = counter++;
 
 				// смена направления
 				dir = direction::down_direction;
 			}
 			else if (y < size - 1 && dir == direction::down_direction) 
 			{
-				matrix.get_cell(x, ++y) = counter++;
+				matrix[++y][x] = counter++;
 				dir = direction::right_direction;
 			}
 			// если предыдущие условия не сработали то мы меняем направление движения курсора и повторяем (итерацию) еще раз 
@@ -87,11 +61,11 @@ namespace lab3 // https://youtu.be/IKJHMhtMnR0
 			{
 				// перемещение курсора по диагонали пока он не упрется в стенку
 				// паралельно устанавливаются значения для клеток
-				while (x < size - 1 && y > 0) matrix.get_cell(++x, --y) = counter++;
+				while (x < size - 1 && y > 0) matrix[--y][++x] = counter++;
 			}
 			else if (y == 0 || x == size - 1) 
 			{
-				while (y < size - 1 && x > 0) matrix.get_cell(--x, ++y) = counter++;
+				while (y < size - 1 && x > 0) matrix[++y][--x] = counter++;
 			}
 
 		}
@@ -99,68 +73,79 @@ namespace lab3 // https://youtu.be/IKJHMhtMnR0
 		return matrix;
 	}
 
+	void print_matrix(matrix_t matrix)
+	{
+		for (vector<double> list : matrix)
+		{
+			for (double i : list) cout << i << "\t";
+			cout << endl << endl;
+		}
+	}
+
 	namespace math_operation
 	{
-		SquareMatrix transpose(SquareMatrix& matrix)
+		matrix_t transpose(matrix_t matrix)
 		{
-			SquareMatrix result(matrix.size());
+			matrix_t result = create_matrix(matrix.size());
 
 			for (int y = 0; y < matrix.size(); y++)
 			{
-				for (int x = 0; x < matrix.size(); x++) result.get_cell(x, y) = matrix.get_cell(y, x);
+				for (int x = 0; x < matrix.size(); x++) result[y][x] = matrix[x][y];
 			}
 			return result;
 		}
 		
-		SquareMatrix minor_matrix(SquareMatrix matrix, int x_rm, int y_rm)
+		matrix_t minor_matrix(matrix_t matrix, int x_rm, int y_rm)
 		{
-			SquareMatrix result(matrix.size() - 1);
+			matrix_t result = create_matrix(matrix.size() - 1);
 			for (int y = 0, result_y = 0; y < matrix.size(); y++)
 			{
 				if (y == y_rm) continue;
+
 				for (int x = 0, result_x = 0; x < matrix.size(); x++)
 				{
 					if (x == x_rm) continue;
-
-					result.get_cell(result_x++, result_y) = matrix.get_cell(x, y);
+					result[result_y][result_x++] = matrix[y][x];
 				}
+
 				result_y++;
 			}
 			return result;
 		}
 
-		double determinant(SquareMatrix matrix)
+		double determinant(matrix_t matrix)
 		{
 			// терминальное условие: если минор матрицы 2-ого порядка
 			if (matrix.size() <= 2)
 			{
-				return matrix.get_cell(0, 0) * matrix.get_cell(1, 1) 
-					- (matrix.get_cell(1, 0) * matrix.get_cell(0, 1));
+				return matrix[0][0] * matrix[1][1] - (matrix[0][1] * matrix[1][0]);
 			}
 
 			double result = 0;
 			for (int i = 0; i < matrix.size(); i++) 
 			{
 				// находим минор 
-				SquareMatrix new_matrix = minor_matrix(matrix, i, 0);
-				result += (i % 2 == 0 ? 1 : -1) * matrix.get_cell(i, 0) * determinant(new_matrix);
+				matrix_t new_matrix = minor_matrix(matrix, i, 0);
+				result += (i % 2 == 0 ? 1 : -1) * matrix[0][i] * determinant(new_matrix);
 			}
 			return result;
 		}
 
-		SquareMatrix* inverse_matrix(SquareMatrix matrix)
+		matrix_t* inverse_matrix(matrix_t matrix)
 		{
 			double det = determinant(matrix);
 			if (det == 0) return NULL;
 			
-			SquareMatrix* result = new SquareMatrix(matrix.size());
+			matrix_t* result = new matrix_t;
+
+			*result = create_matrix(matrix.size());
 			matrix = transpose(matrix);
 
 			for (int y = 0; y < result->size(); y++)
 			{
 				for (int x = 0; x < result->size(); x++)
 				{
-					result->get_cell(x, y) = pow(-1, x + y) * determinant(minor_matrix(matrix, x, y)) * (1. / det);
+					(*result)[y][x] = pow(-1, x + y) * determinant(minor_matrix(matrix, x, y)) * (1. / det);
 				}
 
 			}
@@ -169,28 +154,20 @@ namespace lab3 // https://youtu.be/IKJHMhtMnR0
 
 		}
 
-		SquareMatrix* multiply_matrix(SquareMatrix matrix1, SquareMatrix matrix2)
+		matrix_t multiply_matrix(matrix_t matrix1, matrix_t matrix2)
 		{
-			if (matrix1.size() != matrix2.size()) return NULL;
-			SquareMatrix* result = new SquareMatrix(matrix1.size());
 
-			// лямда-фукнция для вычисления значения клетки при перемножении столбцов и строк
-			// захватываем перемножаемые матрицы в анонимном методе
-			auto line_operation = [&matrix1, &matrix2](int x, int y)
-			{
-				double cell_value = 0;
-				for (int i = 0; i < matrix1.size(); i++)
-				{
-					cell_value += (matrix1.get_cell(i, y) * matrix2.get_cell(x, i));
-				}
-				return cell_value;
-			};
+			matrix_t result = create_matrix(matrix1.size());
 
-			for (int y = 0; y < result->size(); y++) 
+			for (int y = 0; y < result.size(); y++) 
 			{
-				for (int x = 0; x < result->size(); x++) 
+				for (int x = 0; x < result.size(); x++) 
 				{
-					result->get_cell(x, y) = line_operation(x, y);
+					for (int i = 0; i < result.size(); i++)
+					{
+						result[y][x] += matrix1[y][i] * matrix2[i][x];
+					}
+
 				}
 			}
 			return result;
@@ -207,9 +184,10 @@ namespace lab3 // https://youtu.be/IKJHMhtMnR0
 
 		try 
 		{
+			
 			while (true) 
 			{
-				system("cls");
+				system("cls");//Определитель отличен от нуля, следовательно, матрица является невырожденной и для нее можно найти обратную матрицу.
 				 
 				cout << "Введите размер матрицы (N x N) где 4 <= n <= 16: ";
 				cin >> n;
@@ -223,30 +201,27 @@ namespace lab3 // https://youtu.be/IKJHMhtMnR0
 				}
 			}
 			
-			SquareMatrix matrix(n), *inverse, *result;
+			matrix_t matrix = create_matrix(n), * inverse;
 			matrix = fill_matrix(matrix, n);
 			
-			// определитель отличен от нуля, следовательно, матрица является невырожденной и для нее можно найти обратную матрицу.
 			if ((inverse = math_operation::inverse_matrix(matrix)) == NULL) 
 			{
 				cout << "Исходная матрица является вырожденной - нельзя получить обратную матрицу" << endl;
 				throw std::exception("det = 0");
 			}
 
-			SquareMatrix::print_matrix(matrix);
 			cout << endl << endl;
 
-			SquareMatrix::print_matrix(*inverse);
+			print_matrix(matrix);
 			cout << endl << endl;
 
-			if ((result = math_operation::multiply_matrix(matrix, *inverse)) == NULL) 
-			{
-				cout << "Матрицы нельзя перемножить" << endl;
-				throw std::exception("cannot multiply");
-			}
-			SquareMatrix::print_matrix(*result);
+			print_matrix(*inverse);
+			cout << endl << endl;
 
-			delete inverse, result;
+			matrix_t result = math_operation::multiply_matrix(matrix, *inverse);
+			print_matrix(result);
+
+			delete inverse;
 		}
 		catch (...) 
 		{

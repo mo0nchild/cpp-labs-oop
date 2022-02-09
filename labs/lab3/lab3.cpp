@@ -8,8 +8,8 @@ namespace lab3 // https://youtu.be/IKJHMhtMnR0
 
 	enum class direction { right_direction = 0, down_direction };
 	using matrix_t = vector<vector<double>>;
-	
-	struct SquareMatrix 
+
+	struct SquareMatrix
 	{
 	private:
 		matrix_t matrix;
@@ -26,7 +26,7 @@ namespace lab3 // https://youtu.be/IKJHMhtMnR0
 
 		// методы доступа
 		int size() { return matrix.size(); }
-		double& get_cell(int x, int y) 
+		double& get_cell(int x, int y)
 		{
 			if ((x < matrix.size() && x >= 0) && (y < matrix.size() && y >= 0))
 			{
@@ -37,7 +37,7 @@ namespace lab3 // https://youtu.be/IKJHMhtMnR0
 
 		static void print_matrix(SquareMatrix& matrix)
 		{
-			for (int i = 0; i < matrix.size(); i++) 
+			for (int i = 0; i < matrix.size(); i++)
 			{
 				for (int k = 0; k < matrix.size(); k++) cout << matrix.get_cell(k, i) << "\t";
 				cout << endl << endl;
@@ -56,10 +56,10 @@ namespace lab3 // https://youtu.be/IKJHMhtMnR0
 		direction dir(direction::right_direction);
 
 		// заполнение матрицы
-		for (int x = 0, y = 0; y != size - 1 || x != size - 1; ) 
+		for (int x = 0, y = 0; y != size - 1 || x != size - 1; )
 		{
 			// проверка: если направление = направо ; и справа свободно
-			if (x < size - 1 && dir == direction::right_direction) 
+			if (x < size - 1 && dir == direction::right_direction)
 			{
 				// смещение курсора вправо и установка значения клетки
 				matrix.get_cell(++x, y) = counter++;
@@ -67,13 +67,13 @@ namespace lab3 // https://youtu.be/IKJHMhtMnR0
 				// смена направления
 				dir = direction::down_direction;
 			}
-			else if (y < size - 1 && dir == direction::down_direction) 
+			else if (y < size - 1 && dir == direction::down_direction)
 			{
 				matrix.get_cell(x, ++y) = counter++;
 				dir = direction::right_direction;
 			}
 			// если предыдущие условия не сработали то мы меняем направление движения курсора и повторяем (итерацию) еще раз 
-			else 
+			else
 			{
 				if (dir == direction::down_direction) dir = direction::right_direction;
 				else dir = direction::down_direction;
@@ -83,13 +83,13 @@ namespace lab3 // https://youtu.be/IKJHMhtMnR0
 			// проверка если курсор находится на границе матрицы : слево или снизу
 			// если истина то это означает что движение по диагонали будет направлено по диагонали - вверх и вправо
 			// иначе - вниз и влево
-			if (x == 0 || y == size - 1) 
+			if (x == 0 || y == size - 1)
 			{
 				// перемещение курсора по диагонали пока он не упрется в стенку
 				// паралельно устанавливаются значения для клеток
 				while (x < size - 1 && y > 0) matrix.get_cell(++x, --y) = counter++;
 			}
-			else if (y == 0 || x == size - 1) 
+			else if (y == 0 || x == size - 1)
 			{
 				while (y < size - 1 && x > 0) matrix.get_cell(--x, ++y) = counter++;
 			}
@@ -111,7 +111,7 @@ namespace lab3 // https://youtu.be/IKJHMhtMnR0
 			}
 			return result;
 		}
-		
+
 		SquareMatrix minor_matrix(SquareMatrix matrix, int x_rm, int y_rm)
 		{
 			SquareMatrix result(matrix.size() - 1);
@@ -134,12 +134,12 @@ namespace lab3 // https://youtu.be/IKJHMhtMnR0
 			// терминальное условие: если минор матрицы 2-ого порядка
 			if (matrix.size() <= 2)
 			{
-				return matrix.get_cell(0, 0) * matrix.get_cell(1, 1) 
+				return matrix.get_cell(0, 0) * matrix.get_cell(1, 1)
 					- (matrix.get_cell(1, 0) * matrix.get_cell(0, 1));
 			}
 
 			double result = 0;
-			for (int i = 0; i < matrix.size(); i++) 
+			for (int i = 0; i < matrix.size(); i++)
 			{
 				// находим минор 
 				SquareMatrix new_matrix = minor_matrix(matrix, i, 0);
@@ -152,7 +152,7 @@ namespace lab3 // https://youtu.be/IKJHMhtMnR0
 		{
 			double det = determinant(matrix);
 			if (det == 0) return NULL;
-			
+
 			SquareMatrix* result = new SquareMatrix(matrix.size());
 			matrix = transpose(matrix);
 
@@ -186,9 +186,9 @@ namespace lab3 // https://youtu.be/IKJHMhtMnR0
 				return cell_value;
 			};
 
-			for (int y = 0; y < result->size(); y++) 
+			for (int y = 0; y < result->size(); y++)
 			{
-				for (int x = 0; x < result->size(); x++) 
+				for (int x = 0; x < result->size(); x++)
 				{
 					result->get_cell(x, y) = line_operation(x, y);
 				}
@@ -197,37 +197,37 @@ namespace lab3 // https://youtu.be/IKJHMhtMnR0
 		}
 	}
 
-	bool run(void) 
+	bool run(void)
 	{
 		int n = 0;
 		bool error_state = true;
-		
+
 		cout << fixed;
 		cout.precision(2);
 
-		try 
+		try
 		{
-			while (true) 
+			while (true)
 			{
 				system("cls");
-				 
+
 				cout << "Введите размер матрицы (N x N) где 4 <= n <= 16: ";
 				cin >> n;
 				cout << endl;
 
 				if (n >= 4 && n <= 16) break;
-				else 
+				else
 				{
 					cout << "Введены неверные значения" << endl;
 					system("pause");
 				}
 			}
-			
-			SquareMatrix matrix(n), *inverse, *result;
+
+			SquareMatrix matrix(n), * inverse, * result;
 			matrix = fill_matrix(matrix, n);
-			
+
 			// определитель отличен от нуля, следовательно, матрица является невырожденной и для нее можно найти обратную матрицу.
-			if ((inverse = math_operation::inverse_matrix(matrix)) == NULL) 
+			if ((inverse = math_operation::inverse_matrix(matrix)) == NULL)
 			{
 				cout << "Исходная матрица является вырожденной - нельзя получить обратную матрицу" << endl;
 				throw std::exception("det = 0");
@@ -239,7 +239,7 @@ namespace lab3 // https://youtu.be/IKJHMhtMnR0
 			SquareMatrix::print_matrix(*inverse);
 			cout << endl << endl;
 
-			if ((result = math_operation::multiply_matrix(matrix, *inverse)) == NULL) 
+			if ((result = math_operation::multiply_matrix(matrix, *inverse)) == NULL)
 			{
 				cout << "Матрицы нельзя перемножить" << endl;
 				throw std::exception("cannot multiply");
@@ -248,7 +248,7 @@ namespace lab3 // https://youtu.be/IKJHMhtMnR0
 
 			delete inverse, result;
 		}
-		catch (...) 
+		catch (...)
 		{
 			error_state = false;
 		}
@@ -256,7 +256,7 @@ namespace lab3 // https://youtu.be/IKJHMhtMnR0
 		return error_state;
 	}
 
-	void lab(void) 
+	void lab(void)
 	{
 		bool error_state = run();
 	}
