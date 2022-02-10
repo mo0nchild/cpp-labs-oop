@@ -95,7 +95,7 @@ SquareMatrix* math_operation::multiply_matrix(SquareMatrix matrix1, SquareMatrix
 
 	// лямда-фукнция для вычисления значения клетки при перемножении столбцов и строк
 	// захватываем перемножаемые матрицы в анонимном методе
-	auto line_operation = [&matrix1, &matrix2](int x, int y)
+	auto line_operation = [&matrix1, &matrix2](int x, int y) -> double
 	{
 		double cell_value = 0;
 		for (int i = 0; i < matrix1.size(); i++)
