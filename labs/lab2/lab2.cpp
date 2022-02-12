@@ -1,25 +1,26 @@
 #include "lab2.h"
 using namespace lab2;
 
-
 double* task1::generate_arr(double* arr, int n)
 {
-	for (int i = 0; i < n; i++)
-	{
-		*(arr + i) = random();
-	}
+	for (int i = 0; i < n; i++) *(arr + i) = random();
 	return arr;
 }
 
-double task1::find_min_positive(double* arr, int n)
+double& task1::find_min_positive(double* arr, int n)
 {
-	double min = INFINITY;
+	double min = MAX_ARR_VALUE;
+	int index = -1;
+
 	for (int i = 0; i < n; i++)
 	{
-		if (arr[i] < min && arr[i] > 0) min = arr[i];
-
+		if (arr[i] < min && arr[i] > 0) 
+		{
+			min = arr[i];
+			index = i;
+		}
 	}
-	return (min == INFINITY) ? 0 : min;
+	return (index == -1) ? arr[0] : arr[index];
 }
 
 double task1::calculate(double* arr, int n)
@@ -32,6 +33,15 @@ double task1::calculate(double* arr, int n)
 	return result;
 }
 
+void task1::print_arr(double* arr, int n) 
+{
+	for (int i = n - 1; i >= 0; i--)
+	{
+		if (arr[i] != 0) cout << arr[i] << "\t";
+	}
+	cout << endl;
+}
+
 bool task1::run(void)
 {
 	bool error_state = true;
@@ -40,25 +50,24 @@ bool task1::run(void)
 	cout << "Кол-во элементов массива: ";
 	cin >> N;
 	cout << endl;
-
 	double* arr = new double[N]();
 
 	try
 	{
 		// 1 подзадание
 		arr = generate_arr(arr, N);
+
 		cout << "Элементы: " << endl;
-		for (int i = 0; i < N; i++)
-		{
-			cout << arr[i] << endl;
-		}
+		for (int i = 0; i < N; i++) cout << arr[i] << endl;
 		cout << endl;
 
 		// 2 подзадание
 		double min = find_min_positive(arr, N);
 		cout << "Минимальное положительное: ";
-		if (min) cout << min;
+
+		if (min > 0) cout << min;
 		else cout << "Не найдено";
+
 		cout << endl;
 
 		// 3 подзадание
@@ -66,11 +75,7 @@ bool task1::run(void)
 
 		// 4 подзадание
 		cout << "Ненулевые элементы в обратном порядке: " << endl;
-		for (int i = N - 1; i >= 0; i--)
-		{
-			if (arr[i] != 0) cout << arr[i] << "\t";
-		}
-		cout << endl;
+		print_arr(arr, N);
 	}
 	catch (...)
 	{
@@ -88,18 +93,15 @@ task2::matrix_t task2::generate_matrix(int n, int m)
 	for (int i = 0; i < n; i++)
 	{
 		arr.push_back(vector<int>());
-		for (int k = 0; k < m; k++)
-		{
-			arr[i].push_back((double)(MIN_ARR_VALUE + rand() % (MAX_ARR_VALUE + 1)));
-		}
+		for (int k = 0; k < m; k++) arr[i].push_back(random());
 	}
 	return arr;
 }
 
 bool task2::run(void)
 {
-	int n, m;
 	bool error_state = true;
+	int n, m;
 
 	cout << "Введите число n и m: ";
 	cin >> n >> m;
@@ -107,29 +109,24 @@ bool task2::run(void)
 
 	int* counter = new int[m]();
 	try
-	{
-		//m - column / n - row
+	{	//m - column / n - row
 		task2::matrix_t matrix = generate_matrix(n, m);
-
 		for (vector<int> arr : matrix)
 		{
 			for (int k = 0; k < arr.size(); k++)
 			{
-
 				if (arr[k] > 0)
 				{
-					cout << "\033[32m"; // green color
+					cout << CONSOLE_GREEN_COLOR; // green color
 					(*(counter + k))++;
 				}
 				else if (arr[k] < 0)
 				{
-					cout << "\033[31m"; // red color
+					cout << CONSOLE_RED_COLOR; // red color
 					(*(counter + k))--;
 				}
-				else cout << "\033[36m"; // blue color
-
-				cout << arr[k] << "\033[0m" << "\t";
-
+				else cout << CONSOLE_BLUE_COLOR; // blue color
+				cout << arr[k] << CONSOLE_RESET_COLOR << "\t";
 			}
 			cout << endl << endl;
 		}
@@ -199,9 +196,9 @@ int* task3::sort_merge(int* arr, int n)
 
 bool task3::run(void)
 {
-	int n;
 	bool error_state = true;
 
+	int n;
 	cout << "Введите значение размера массива: ";
 	cin >> n;
 
@@ -214,7 +211,12 @@ bool task3::run(void)
 			cout << arr[i] << " ";
 		}
 		cout << endl;
-		sort_merge(arr, n);
+
+		int* sorted = sort_merge(arr, n);
+		cout << endl << "Результат сортировки: " << endl;
+
+		for (int i = 0; i < n; i++) cout << sorted[i] << " ";
+		cout << endl;
 	}
 	catch (...)
 	{

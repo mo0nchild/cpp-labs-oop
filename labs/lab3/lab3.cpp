@@ -1,7 +1,6 @@
 #include "lab3.h"
 using namespace lab3;
 
-
 SquareMatrix::SquareMatrix(int size)
 {
 	for (int i = 0; i < size; i++)
@@ -15,8 +14,8 @@ void SquareMatrix::print_matrix(SquareMatrix& matrix)
 {
 	for (int i = 0; i < matrix.size(); i++)
 	{
-		for (int k = 0; k < matrix.size(); k++) cout << matrix.get_cell(k, i) << "\t";
-		cout << endl << endl;
+		for (int k = 0; k < matrix.size(); k++) std::cout << matrix.get_cell(k, i) << "\t";
+		std::cout << endl << endl;
 	}
 }
 
@@ -40,7 +39,6 @@ SquareMatrix math_operation::minor_matrix(SquareMatrix matrix, int x_rm, int y_r
 		for (int x = 0, result_x = 0; x < matrix.size(); x++)
 		{
 			if (x == x_rm) continue;
-
 			result.get_cell(result_x++, result_y) = matrix.get_cell(x, y);
 		}
 		result_y++;
@@ -81,11 +79,8 @@ SquareMatrix* math_operation::inverse_matrix(SquareMatrix matrix)
 		{
 			result->get_cell(x, y) = pow(-1, x + y) * determinant(minor_matrix(matrix, x, y)) * (1. / det);
 		}
-
 	}
-
 	return result;
-
 }
 
 SquareMatrix* math_operation::multiply_matrix(SquareMatrix matrix1, SquareMatrix matrix2)
@@ -115,7 +110,7 @@ SquareMatrix* math_operation::multiply_matrix(SquareMatrix matrix1, SquareMatrix
 	return result;
 }
 	
-SquareMatrix lab3::fill_matrix(SquareMatrix& matrix, int size)
+SquareMatrix lab3::fill_matrix(SquareMatrix& matrix)
 {
 	double counter = 1;
 
@@ -125,10 +120,10 @@ SquareMatrix lab3::fill_matrix(SquareMatrix& matrix, int size)
 	direction dir(direction::right_direction);
 
 	// заполнение матрицы
-	for (int x = 0, y = 0; y != size - 1 || x != size - 1; )
+	for (int x = 0, y = 0; y != matrix.size() - 1 || x != matrix.size() - 1; )
 	{
 		// проверка: если направление = направо ; и справа свободно
-		if (x < size - 1 && dir == direction::right_direction)
+		if (x < matrix.size() - 1 && dir == direction::right_direction)
 		{
 			// смещение курсора вправо и установка значения клетки
 			matrix.get_cell(++x, y) = counter++;
@@ -136,7 +131,7 @@ SquareMatrix lab3::fill_matrix(SquareMatrix& matrix, int size)
 			// смена направления
 			dir = direction::down_direction;
 		}
-		else if (y < size - 1 && dir == direction::down_direction)
+		else if (y < matrix.size() - 1 && dir == direction::down_direction)
 		{
 			matrix.get_cell(x, ++y) = counter++;
 			dir = direction::right_direction;
@@ -152,15 +147,15 @@ SquareMatrix lab3::fill_matrix(SquareMatrix& matrix, int size)
 		// проверка если курсор находится на границе матрицы : слево или снизу
 		// если истина то это означает что движение по диагонали будет направлено по диагонали - вверх и вправо
 		// иначе - вниз и влево
-		if (x == 0 || y == size - 1)
+		if (x == 0 || y == matrix.size() - 1)
 		{
 			// перемещение курсора по диагонали пока он не упрется в стенку
 			// паралельно устанавливаются значения для клеток
-			while (x < size - 1 && y > 0) matrix.get_cell(++x, --y) = counter++;
+			while (x < matrix.size() - 1 && y > 0) matrix.get_cell(++x, --y) = counter++;
 		}
-		else if (y == 0 || x == size - 1)
+		else if (y == 0 || x == matrix.size() - 1)
 		{
-			while (y < size - 1 && x > 0) matrix.get_cell(--x, ++y) = counter++;
+			while (y < matrix.size() - 1 && x > 0) matrix.get_cell(--x, ++y) = counter++;
 		}
 
 	}
@@ -173,8 +168,8 @@ bool lab3::run(void)
 	int n = 0;
 	bool error_state = true;
 
-	cout << fixed;
-	cout.precision(2);
+	std::cout << fixed;
+	std::cout.precision(2);
 
 	try
 	{
@@ -182,42 +177,42 @@ bool lab3::run(void)
 		{
 			system("cls");
 
-			cout << "Введите размер матрицы (N x N) где 4 <= n <= 16: ";
+			std::cout << "Введите размер матрицы (N x N) где 4 <= n <= 16: ";
 			cin >> n;
-			cout << endl;
+			std::cout << endl;
 
 			if (n >= 4 && n <= 16) break;
 			else
 			{
-				cout << "Введены неверные значения" << endl;
+				std::cout << "Введены неверные значения" << endl;
 				system("pause");
 			}
 		}
 
 		SquareMatrix matrix(n), * inverse, * result;
-		matrix = fill_matrix(matrix, n);
+		matrix = fill_matrix(matrix);
 
 		// определитель отличен от нуля, следовательно, матрица является невырожденной и для нее можно найти обратную матрицу.
 		if ((inverse = math_operation::inverse_matrix(matrix)) == NULL)
 		{
-			cout << "Исходная матрица является вырожденной - нельзя получить обратную матрицу" << endl;
+			std::cout << "Исходная матрица является вырожденной - нельзя получить обратную матрицу" << endl;
 			throw std::exception("det = 0");
 		}
 
-		cout << "Сгенерированная матрица: " << endl << endl;
+		std::cout << "Сгенерированная матрица: " << endl << endl;
 		SquareMatrix::print_matrix(matrix);
 
-		cout << endl << endl << "Обратная матрица: " << endl << endl;
+		std::cout << endl << endl << "Обратная матрица: " << endl << endl;
 		SquareMatrix::print_matrix(*inverse);
-		cout << endl << endl;
+		std::cout << endl << endl;
 
 		if ((result = math_operation::multiply_matrix(matrix, *inverse)) == NULL)
 		{
-			cout << "Матрицы нельзя перемножить" << endl;
+			std::cout << "Матрицы нельзя перемножить" << endl;
 			throw std::exception("cannot multiply");
 		}
 
-		cout << endl << endl 
+		std::cout << endl << endl
 			<< "Полученная путем перемножения сгенерированной и обратной,\nЕдиничная матрица: "
 			<< endl << endl;
 		SquareMatrix::print_matrix(*result);

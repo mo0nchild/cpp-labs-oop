@@ -32,7 +32,7 @@ namespace lab3 //  https://youtu.be/IKJHMhtMnR0
 
 	};
 
-	SquareMatrix fill_matrix(SquareMatrix& matrix, int size);
+	SquareMatrix fill_matrix(SquareMatrix& matrix);
 
 	namespace math_operation
 	{

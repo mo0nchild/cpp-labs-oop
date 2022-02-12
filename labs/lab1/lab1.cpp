@@ -11,20 +11,17 @@ bool task1::run(void)
 {
 	cout << fixed;
 	cout.precision(4);
+
+	double a, b;
+	cout << "Введите числа (a b): ";
+
 	try
 	{
-		double a, b;
-
-		cout << "Введите числа (a b): ";
 		cin >> a >> b;
-
 		cout << "Сумма чисел A и B равна " << function(a, b) << endl;
 	}
 
-	catch (...)
-	{
-		return false;
-	}
+	catch (...){ return false; }
 	return true;
 }
 
@@ -43,27 +40,27 @@ double task2::function(double x)
 			if (fabs(current_state - iter) <= EBSILON) break;
 		}
 		current_state = iter;
-		//if (n >= stack_without_fall) return 0;
 	}
 	return sum;
 }
 
 bool task2::run(void)
 {
+	double x;
+	cout << "Введите X (-1 <= x <= 1): ";
+	
 	try
 	{
-		double x;
-
-		cout << "Введите X: ";
 		cin >> x;
-
+		if (fabs(x) > 1)
+		{
+			cout << "Значение не соответствует отрезку" << endl;
+			system("pause");
+			throw std::exception("value out of range");
+		}
 		cout << "F(x): " << function(x) << endl;
 	}
-
-	catch (...)
-	{
-		return false;
-	}
+	catch (...){ return false; }
 
 	return true;
 }
@@ -194,63 +191,55 @@ void task3::subtask7(void)
 
 bool task3::run(void)
 {
+	void (*tasks[7])(void) = {
+		subtask1, subtask2, subtask3,
+		subtask4, subtask5, subtask6,
+		subtask7
+	};
+
+	cout << "Введите номер задания с ошибкой (1-7): ";
+	int n;
+
 	try
-	{
-		void (*tasks[7])(void) = { subtask1, subtask2, subtask3, subtask4, subtask5, subtask6, subtask7 };
-
-		cout << "Введите номер задания с ошибкой (1-7): ";
-		int n;
+	{		
 		cin >> n;
-		n--;
-
-		if (n < 0 || n > 6)
+		if (n < 1 || n > 7)
 		{
 			cout << "Задание не найдено" << endl;
 			throw std::exception("not found");
 		}
 
-		tasks[n]();
+		tasks[--n]();
 	}
-	catch (...)
-	{
-		return false;
-	}
+	catch (...) { return false; }
 	return true;
 }
 
 bool task4::run(void)
 {
+	double n;
+	cout << "Введите число: ";
 	try
-	{
-		int n;
-		cout << "Введите число: ";
+	{	
 		cin >> n;
 
 		if (n > 0) cout << "Число положительное" << endl;
 		else cout << "Число неположительное" << endl;
 	}
 
-	catch (...)
-	{
-		return false;
-	}
+	catch (...){ return false; }
 	return true;
 }
 	
 void lab1::lab(void)
 {
-
 	bool exit_trigger = false, error_handler = true;
-
 	while (1)
 	{
 		system("cls");
 		int task_number = -1;
-		cout << endl
-			<< "1 - Проверка Задачи 1\n"
-			<< "2 - Проверка Задачи 2\n"
-			<< "3 - Проверка Задачи 3\n"
-			<< "4 - Проверка Задачи 4\n"
+		cout << endl << "1 - Проверка Задачи 1\n" << "2 - Проверка Задачи 2\n" 
+			<< "3 - Проверка Задачи 3\n" << "4 - Проверка Задачи 4\n"
 			<< "5 - Выход из программы" << endl << endl;
 
 		cout << "Введите номер задания: " << endl;
@@ -259,28 +248,12 @@ void lab1::lab(void)
 
 		switch (task_number)
 		{
-		case 1:
-			error_handler = task1::run();
-			break;
-
-		case 2:
-			error_handler = task2::run();
-			break;
-
-		case 3:
-			error_handler = task3::run();
-			break;
-
-		case 4:
-			error_handler = task4::run();
-			break;
-
-		case 5:
-			exit_trigger = true;
-			break;
-
+		case 1: error_handler = task1::run(); break;
+		case 2: error_handler = task2::run(); break;
+		case 3: error_handler = task3::run(); break;
+		case 4: error_handler = task4::run(); break;
+		case 5: exit_trigger = true; break;
 		default:cout << "Неверный ввод" << endl;
-
 		}
 
 		if (exit_trigger) break;
@@ -288,8 +261,6 @@ void lab1::lab(void)
 		{
 			if (!error_handler) cout << "При выполнении задания возникла ошибка\n" << endl;
 		}
-
 		system("pause");
-
 	}
 }
