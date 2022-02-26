@@ -63,8 +63,6 @@ namespace lab6
 			this->angles = calculate_angles(vertexs); 
 			this->edges = calculate_edges(vertexs);
 			this->normal = calculate_normal(vertexs);
-
-			
 		}
 
 		Shape2d(const Shape2d& obj) : Shape2d(obj.vertexs)
