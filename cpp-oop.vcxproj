@@ -145,6 +145,7 @@
     <ClCompile Include="labs\lab3\lab3.cpp" />
     <ClCompile Include="labs\lab4\lab4.cpp" />
     <ClCompile Include="labs\lab5\lab5.cpp" />
+    <ClCompile Include="labs\lab6\lab6.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="labs\lab.h" />
@@ -154,6 +155,7 @@
     <ClInclude Include="labs\lab3\lab3-old.h" />
     <ClInclude Include="labs\lab4\lab4.h" />
     <ClInclude Include="labs\lab5\lab5.h" />
+    <ClInclude Include="labs\lab6\lab6.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="labs\lab4\files\input.txt" />

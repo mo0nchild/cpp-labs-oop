@@ -33,6 +33,9 @@
     <ClCompile Include="labs\lab5\lab5.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="labs\lab6\lab6.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="labs\lab1\lab1.h">
@@ -54,6 +57,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="labs\lab5\lab5.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="labs\lab6\lab6.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
