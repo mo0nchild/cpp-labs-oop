@@ -197,11 +197,7 @@ const lab6::Shape2d& lab6::Shape3d::operator[](int index) const
 
 bool lab6::Shape3d::move_to(Vector3d direction)
 {
-	for (Shape2d* face : this->faces) 
-	{
-		for (int i = 0; i < face->get_vertex_count(); i++)
-			face[i].move_to(direction);
-	}
+	for (Shape2d* face : this->faces) (*face).move_to(direction);
 	return true;
 }
 
