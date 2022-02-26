@@ -63,9 +63,14 @@ namespace lab6
 			this->angles = calculate_angles(vertexs); 
 			this->edges = calculate_edges(vertexs);
 			this->normal = calculate_normal(vertexs);
+
+			
 		}
 
-		~Shape2d() { delete[] angles; delete[] edges; }
+		Shape2d(const Shape2d& obj) : Shape2d(obj.vertexs)
+		{ }
+
+		~Shape2d() { delete[] angles, edges; }
 
 		int get_vertex_count() const { return vertexs.size(); }
 		Vector3d get_normal() const { return normal; }
@@ -87,6 +92,8 @@ namespace lab6
 		Triangle(vector<Point> vertexs) : Shape2d(vertexs)
 		{ }
 	public:
+		Triangle(const Triangle& obj) : Shape2d(obj)
+		{ }
 
 		static Triangle create_triangle(array<Point, 3> points);
 		double calculate_area() const override;
@@ -99,6 +106,9 @@ namespace lab6
 		{ }
 
 	public:
+		Quadrangle(const Quadrangle& obj): Shape2d(obj)
+		{ }
+
 		static Quadrangle create_quadrangle(array<Point, 4> points);
 		// Площадь произвольного четырехугольника можно найти перемножив 
 		// диагонали данного четырехугольника, полученный результат разделить 
@@ -113,13 +123,7 @@ namespace lab6
 		Shape3d(vector<Shape2d*> faces): faces(faces)
 		{ }
 
-		~Shape3d() 
-		{
-			for (int i = 0; i < faces.size(); i++) 
-			{
-				delete faces[i];
-			}
-		}
+		~Shape3d() { for (Shape2d* i : faces) delete i; }
 
 		int get_faces_count() const { return faces.size(); }
 		bool move_to(Vector3d direction) override;
@@ -147,10 +151,10 @@ namespace lab6
 		const Shape2d& get_lower_base() const { return (*this)[0]; }
 		const Shape2d& get_side(int index) const { return (*this)[index + 2]; };
 
-		static TrianglePrism* create_prism_by_shape(
+		static TrianglePrism create_prism_by_shape(
 			array<Quadrangle, 3> sides, array<Triangle, 2> bases);
 
-		static TrianglePrism* create_prism_by_param(
+		static TrianglePrism create_prism_by_param(
 			Triangle base, Vector3d base_offset, double height);
 
 		const double get_height() const { return height; }
