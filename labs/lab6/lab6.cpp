@@ -286,312 +286,122 @@ double lab6::TrianglePrism::calculate_perimeter() const
 	return P;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////--Testing--//////////////////////////////////////////////
+
+void lab6::testing::test_point_class(void) 
+{
+	Point point(Vector3d(10, 10, 10));
+	std::cout << "\t" << "Создание экземпляра точки с позицией (10, 10, 10)" << std::endl;
+
+	std::cout << "\t" << "Расстояние до точки (20, 20, 20): " <<
+		point.calculate_distance(Point(Vector3d(20, 20, 20))) << std::endl;
+
+	std::cout << "\t" << "Предыдущее положение: x = " << point[Point::x_coordinate]
+		<< "; y = " << point[Point::y_coordinate]
+		<< "; z = " << point[Point::z_coordinate] << std::endl;
+
+	std::cout << "\t" << "Вектор перемещения (x, y, z) -> (20, 20, -20)" << endl;
+
+	point.move_to(Vector3d(20, 20, -20));
+
+	std::cout << "\t" << "Текущее положение: x = " << point[Point::x_coordinate]
+		<< "; y = " << point[Point::y_coordinate]
+		<< "; z = " << point[Point::z_coordinate] << std::endl;
+
+	std::cout << "\t" << "Угол между (0, 0, 0) и (10, 0, 0): " <<
+		point.calculate_angle_between(Vector3d(0,0,0), Vector3d(10,0,0)) / M_PI * 180
+		<< " (deg)" << std::endl;
+}
+
+void lab6::testing::test_triangle_class(void) 
+{
+	Triangle triangle = Triangle::create_triangle(array<Point, 3>{
+		Point(Vector3d(10, 0, 0)), Point(Vector3d(0, 0, 0)), Point(Vector3d(0, 10, 0))
+	});
+	std::cout << "\t" << "Создание экземпляра треугольника с вершинами:" << std::endl
+		<< "\t\t" << "(10, 0, 0), (0, 0, 0), (0, 10, 0)" << endl;
+
+	std::cout << "\t" << "Количество вершин: " << triangle.get_vertex_count() << endl;
+	cout << "\t" << "Вектор нормали: { " << triangle.get_normal().x << "; "
+		<< triangle.get_normal().y << "; " << triangle.get_normal().z << " }" << endl;
+
+	cout << "\t" << "Длина стороны с индексом [0]: " << triangle.get_egde(0) << endl;
+	cout << "\t" << "Значение угла с индексом [0]: " << triangle.get_angle(0) / M_PI * 180 << endl;
+	cout << "\t" << "Периметр: " << triangle.calculate_perimeter() << endl;
+	cout << "\t" << "Площадь: " << triangle.calculate_area() << endl;
+
+	cout << "\t" << "Положение вершины с индексом [0]" << "x: " << triangle[0][Point::x_coordinate]
+		<< " y: " << triangle[0][Point::y_coordinate]
+		<< " z: " << triangle[0][Point::z_coordinate] << endl;
+
+	cout << "\t" << "Предыдущее положение: " << endl;
+	for (int i = 0; i < triangle.get_vertex_count(); i++)
+	{
+		cout << "\t" << "x = " << triangle[i][Point::x_coordinate]
+			<< "; y = " << triangle[i][Point::y_coordinate]
+			<< "; z = " << triangle[i][Point::z_coordinate] << endl;
+	}
+
+	cout << "\t" << "Вектор перемещения (x, y, z) -> (10, 10, 10)" << endl;
+
+	triangle.move_to(Vector3d(10, 10, 10));
+
+	cout << "\t" << "Текущее положение: " << endl;
+	for (int i = 0; i < triangle.get_vertex_count(); i++)
+	{
+		cout << "\t" << "x = " << triangle[i][Point::x_coordinate]
+			<< "; y = " << triangle[i][Point::y_coordinate]
+			<< "; z = " << triangle[i][Point::z_coordinate] << endl;
+	}
+}
+
+void lab6::testing::test_triangle_prism_class(void) 
+{
+	auto prism = TrianglePrism::create_prism_by_param(
+		Triangle::create_triangle(array<Point, 3>{
+			Point(Vector3d(10, 0, 0)), Point(Vector3d(0, 0, 0)), Point(Vector3d(0, 10, 0))
+		}), Vector3d(0, 0, 0), 10
+	);
+	std::cout << "\t" << "Создание экземпляра треугольной призмы с парамтерами:" << std::endl
+		<< "\t\t" << "Вершины основания: (10, 0, 0), (0, 0, 0), (0, 10, 0)" << endl
+		<< "\t\t" << "Высота: 10, Смещение верхнего основания: {0, 0, 0}" << endl;
+
+	cout << "\t" << "Количество граней: " << prism.get_faces_count() << endl;
+	cout << "\t" << "Предыдущее положение основания: " << endl;
+	for (int i = 0; i < prism.get_lower_base().get_vertex_count(); i++)
+	{
+		cout << "\t" << "x = " << prism.get_lower_base()[i][Point::x_coordinate]
+			<< "; y = " << prism.get_lower_base()[i][Point::y_coordinate]
+			<< "; z = " << prism.get_lower_base()[i][Point::z_coordinate] << endl;
+	}
+
+	cout << "\t" << "Вектор перемещения (x, y, z) -> (10, 10, 10)" << endl;
+	prism.move_to(Vector3d(10, 10, 10));
+
+	cout << "\t" << "Текущее положение: " << endl;
+	for (int i = 0; i < prism.get_lower_base().get_vertex_count(); i++)
+	{
+		cout << "\t" << "x = " << prism.get_lower_base()[i][Point::x_coordinate]
+			<< "; y = " << prism.get_lower_base()[i][Point::y_coordinate]
+			<< "; z = " << prism.get_lower_base()[i][Point::z_coordinate] << endl;
+	}
+	cout << "\t" << "Объем призмы: " << prism.calculate_size() << endl;
+	cout << "\t" << "Площадь полной поверхности: " << prism.calculate_fullarea() << endl;
+	cout << "\t" << "Полный периметр: " << prism.calculate_perimeter() << endl; \
+	cout << "\t" << "Высота: " << prism.get_height() << endl;
+}
 
 void lab6::lab(void)
 {
-	int operation = -1;
-	string line;
+	cout << "Тестирование класса \"Point\"" << endl;
+	testing::test_point_class();
+	cout << endl << endl;
 
-	while(true) 
-	{
-		system("cls");
-		cout << "Выбор объекта для работы: " << endl;
-		cout << "1 - Объект класса \"Точка\"" << endl
-			<< "2 - Объект класса \"Треугольник\"" << endl
-			<< "3 - Объект класса \"Треугольная Призма\"" << endl 
-			<< "4 - Выход из программы" << endl;
-		try 
-		{
-			getline(cin, line);
-			operation = stoi(line);
-		}
-		catch (std::exception error) 
-		{
-			cout << "Неверный ввод номера операции" << endl;
-			continue;
-		}
+	cout << "Тестирование класса \"Triangle\"" << endl;
+	testing::test_triangle_class();
+	cout << endl << endl;
 
-		switch (operation)
-		{
-		case 1:
-		{
-			Vector3d dir;
-			cout << "Введите значение координаты (x, y, z) -> " << endl;
-			cin >> dir.x >> dir.y >> dir.z;
-
-			Point point(dir);
-			cout << "Введите номер операции" << endl
-				<< "1 - Вычислить расстояние до точки" << endl
-				<< "2 - Переместить точку" << endl
-				<< "3 - Угол между точками" << endl;
-			cin >> operation;
-			switch (operation)
-			{
-			case 1:
-			{
-				cout << "Координаты точки (x, y, z) -> ";
-				cin >> dir.x >> dir.y >> dir.z;
-				cout << "Расстояние: " << point.calculate_distance(Point(dir)) << endl;
-
-			break;
-			}
-			case 2:
-			{
-				cout << "Предыдущее положение: x = " << point[Point::x_coordinate]
-					<< "; y = " << point[Point::y_coordinate]
-					<< "; z = " << point[Point::z_coordinate] << endl;
-
-				cout << "Вектор перемещения (x, y, z) -> ";
-				cin >> dir.x >> dir.y >> dir.z;
-
-				point.move_to(dir);
-
-				cout << "Текущее положение: x = " << point[Point::x_coordinate]
-					<< "; y = " << point[Point::y_coordinate]
-					<< "; z = " << point[Point::z_coordinate] << endl;
-			}
-			break;
-
-			case 3:
-			{
-				Vector3d dir2;
-
-				cout << "Координаты точки 1 (x, y, z) -> ";
-				cin >> dir.x >> dir.y >> dir.z;
-
-				cout << "Координаты точки 2 (x, y, z) -> ";
-				cin >> dir2.x >> dir2.y >> dir2.z;
-
-				cout << " Угол: " << point.calculate_angle_between(dir, dir2) / M_PI * 180
-					<< " (deg)" << endl;
-			}
-			break;
-
-			default:
-				cout << "Неверный номер операции" << endl;
-			}
-
-		}
-		break;
-		case 2:
-		{
-			Vector3d p1, p2, p3;
-
-			cout << "Введите значение координаты 1 (x, y, z) -> ";
-			cin >> p1.x >> p1.y >> p1.z;
-			cout << "Введите значение координаты 2 (x, y, z) -> ";
-			cin >> p2.x >> p2.y >> p2.z;
-			cout << "Введите значение координаты 3 (x, y, z) -> ";
-			cin >> p3.x >> p3.y >> p3.z;
-
-			Triangle triangle = Triangle::create_triangle(array<Point, 3>{
-				Point(p1), Point(p2), Point(p3)
-			});
-
-			if (triangle.calculate_area() <= 0 || isnan(triangle.calculate_area()))
-			{
-				cout << "Нельзя создать такой треугольник" << endl;
-				break;
-			}
-
-			cout << "Введите номер операции" << endl
-				<< "1 - Получить кол-во вершин" << endl
-				<< "2 - Получить вектор нормали" << endl
-				<< "3 - Получить длину стороны" << endl
-				<< "4 - Получить значение угола" << endl
-				<< "5 - Рассчитать периметр" << endl
-				<< "6 - Рассчитать площадь" << endl
-				<< "7 - Получить вершину" << endl
-				<< "8 - Переместить плоскость" << endl;
-				
-			cin >> operation;
-			switch (operation)
-			{
-			case 1:
-			{
-				cout << "Количество вершин: " << triangle.get_vertex_count() << endl;
-			} 
-			break;
-			case 2:
-			{
-				cout << "Вектор нормали: { " << triangle.get_normal().x << "; "
-					<< triangle.get_normal().y << "; " << triangle.get_normal().z << " }" << endl;
-			}
-			break;
-			case 3:
-			{
-				int index; 
-				cout << "Введите индекс стороны: ";
-				cin >> index;
-
-				cout << "Длина стороны: " << triangle.get_egde(index) << endl;
-			}
-			break;
-			case 4:
-			{
-				int index;
-				cout << "Введите индекс угла: ";
-				cin >> index;
-
-				cout << "Значение угла: " << triangle.get_angle(index) / M_PI * 180 << endl;
-			}
-			break;
-			case 5:
-			{
-				cout << "Периметр: " << triangle.calculate_perimeter() << endl;
-			}
-			break;
-			case 6:
-			{
-				cout << "Площадь: " << triangle.calculate_area() << endl;
-			}
-			break;
-			case 7:
-			{
-				int index;
-				cout << "Введите индекс вершины: ";
-				cin >> index;
-
-				cout << "x: " << triangle[index][Point::x_coordinate]
-					<< " y: " << triangle[index][Point::y_coordinate]
-					<< " z: " << triangle[index][Point::z_coordinate] << endl;
-			}
-			break;
-			case 8:
-			{
-				cout << "Предыдущее положение: " << endl;
-				for (int i = 0; i < triangle.get_vertex_count(); i++) 
-				{
-					cout << "x = " << triangle[i][Point::x_coordinate]
-						<< "; y = " << triangle[i][Point::y_coordinate]
-						<< "; z = " << triangle[i][Point::z_coordinate] << endl;
-				}
-				cout << endl;
-
-				Vector3d dir;
-				cout << "Вектор перемещения (x, y, z) -> ";
-				cin >> dir.x >> dir.y >> dir.z;
-
-				triangle.move_to(dir);
-
-				cout << "Текущее положение: " << endl;
-				for (int i = 0; i < triangle.get_vertex_count(); i++)
-				{
-					cout << "x = " << triangle[i][Point::x_coordinate]
-						<< "; y = " << triangle[i][Point::y_coordinate]
-						<< "; z = " << triangle[i][Point::z_coordinate] << endl;
-				}
-				cout << endl;
-			}
-			break;
-			default:
-				cout << "Неверный номер операции" << endl;
-			}
-		}
-			break;
-		case 3:
-		{
-			Vector3d p1, p2, p3, dir;
-			double height;
-
-			cout << "Введите значение координаты 1 (x, y, z) -> ";
-			cin >> p1.x >> p1.y >> p1.z;
-			cout << "Введите значение координаты 2 (x, y, z) -> ";
-			cin >> p2.x >> p2.y >> p2.z;
-			cout << "Введите значение координаты 3 (x, y, z) -> ";
-			cin >> p3.x >> p3.y >> p3.z;
-
-			cout << "Введите значение высоты: ";
-			cin >> height;
-			cout << "Введите вектор смещение верхнего основания (x, y, z) -> ";
-			cin >> dir.x >> dir.y >> dir.z;
-
-			auto prism = TrianglePrism::create_prism_by_param(
-				Triangle::create_triangle(array<Point, 3>{Point(p1), Point(p2), Point(p3)}), dir, height
-			);
-
-			if (prism.calculate_size() <= 0 || isnan(prism.calculate_size()))
-			{
-				cout << "S(осн) = " << prism.get_lower_base().calculate_area() << endl;
-				cout << "H = " << prism.get_height() << endl;
-				cout << "Нельзя создать такую призму" << endl;
-				break;
-			}
-
-			cout << "Введите номер операции" << endl
-				<< "1 - Получить кол-во граней" << endl
-				<< "2 - Переместить призму" << endl
-				<< "3 - Вычислить объём" << endl
-				<< "4 - Вычислить площадь полной поверхности" << endl
-				<< "5 - Вычислить полный периметр" << endl
-				<< "6 - Получить высоту призмы" << endl;
-
-			cin >> operation;
-			switch (operation)
-			{
-			case 1:
-			{
-				cout << "Количество граней: " << prism.get_faces_count() << endl;
-			}
-			break;
-			case 2:
-			{
-				cout << "Предыдущее положение основания: " << endl;
-				for (int i = 0; i < prism.get_lower_base().get_vertex_count(); i++)
-				{
-					cout << "x = " << prism.get_lower_base()[i][Point::x_coordinate]
-						<< "; y = " << prism.get_lower_base()[i][Point::y_coordinate]
-						<< "; z = " << prism.get_lower_base()[i][Point::z_coordinate] << endl;
-				}
-				cout << endl;
-
-				Vector3d dir;
-				cout << "Вектор перемещения (x, y, z) -> ";
-				cin >> dir.x >> dir.y >> dir.z;
-
-				prism.move_to(dir);
-
-				cout << "Текущее положение: " << endl;
-				for (int i = 0; i < prism.get_lower_base().get_vertex_count(); i++)
-				{
-					cout << "x = " << prism.get_lower_base()[i][Point::x_coordinate]
-						<< "; y = " << prism.get_lower_base()[i][Point::y_coordinate]
-						<< "; z = " << prism.get_lower_base()[i][Point::z_coordinate] << endl;
-				}
-				cout << endl;
-			}
-			break;
-			case 3:
-			{
-				cout << "Объем призмы: " << prism.calculate_size() << endl;
-			}
-			break;
-			case 4:
-			{
-				cout << "Площадь полной поверхности: " << prism.calculate_fullarea() << endl;
-			}
-			break;
-			case 5:
-			{
-				cout << "Полный периметр: " << prism.calculate_perimeter() << endl;
-			}
-			break;
-			case 6:
-			{
-				cout << "Высота: " << prism.get_height() << endl;
-			}
-			break;
-			default:
-				cout << "Неверный номер операции" << endl;
-			}
-		}
-		break;
-		case 4: return;
-		default:
-			cout << "Неверный номер" << endl;
-		}
-
-		system("pause");
-	}
+	cout << "Тестирование класса \"TrianglePrism\"" << endl;
+	testing::test_triangle_prism_class();
+	cout << endl << endl;
 }

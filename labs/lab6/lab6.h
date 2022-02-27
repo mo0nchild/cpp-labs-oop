@@ -160,5 +160,12 @@ namespace lab6
 		double calculate_perimeter() const override;
 	};
 
+	namespace testing 
+	{
+		void test_point_class(void);
+		void test_triangle_class(void);
+		void test_triangle_prism_class(void);
+	}
+
 	void lab(void);
 }
