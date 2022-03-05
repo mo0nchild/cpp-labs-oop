@@ -189,7 +189,7 @@ namespace lab7
 
 			virtual string get_info(void) const
 			{
-				return "name: " + name + "\nx: " + to_string(center.x)
+				return  + "id: " + to_string(id) + "\tname: " + name + "\nx: " + to_string(center.x)
 					+ "\ty: " + to_string(center.y)
 					+ "\tz: " + to_string(center.z);
 			}
