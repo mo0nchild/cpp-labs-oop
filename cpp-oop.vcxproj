@@ -140,15 +140,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cpp-oop.cpp" />
+    <ClCompile Include="labs\lab10\lab10.cpp" />
     <ClCompile Include="labs\lab1\lab1.cpp" />
     <ClCompile Include="labs\lab2\lab2.cpp" />
     <ClCompile Include="labs\lab3\lab3.cpp" />
     <ClCompile Include="labs\lab4\lab4.cpp" />
     <ClCompile Include="labs\lab5\lab5.cpp" />
     <ClCompile Include="labs\lab6\lab6.cpp" />
+    <ClCompile Include="labs\lab7\lab7.cpp" />
+    <ClCompile Include="labs\lab8\lab8.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="labs\lab.h" />
+    <ClInclude Include="labs\lab10\lab10.h" />
     <ClInclude Include="labs\lab1\lab1.h" />
     <ClInclude Include="labs\lab2\lab2.h" />
     <ClInclude Include="labs\lab3\lab3.h" />
@@ -156,6 +159,8 @@
     <ClInclude Include="labs\lab4\lab4.h" />
     <ClInclude Include="labs\lab5\lab5.h" />
     <ClInclude Include="labs\lab6\lab6.h" />
+    <ClInclude Include="labs\lab7\lab7.h" />
+    <ClInclude Include="labs\lab8\lab8.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="labs\lab4\files\input.txt" />

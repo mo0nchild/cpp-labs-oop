@@ -185,7 +185,7 @@ void lab5::lab(void)
 				<< money.get_info() << endl;
 			break;
 
-		case 11:
+		case 11: 
 			try 
 			{
 				cout << money.get_info() << endl;
