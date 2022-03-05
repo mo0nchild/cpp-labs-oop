@@ -8,7 +8,7 @@ void lab7::task1::run(void)
 	Expression* e2 = new Number(-1.234);
 	Expression* e3 = new BinaryOperation(e1, BinaryOperation::DIV, e2);
 
-	cout << e3->evaluate() << endl;
+	cout << "Результат: " << e3->evaluate() << endl;
 	delete e3;
 }
 
@@ -21,7 +21,7 @@ void lab7::task2::run(void)
 	Expression* n2 = new Number(2.0);
 	Expression* mult = new BinaryOperation(n2, BinaryOperation::MUL, callSqrt);
 	Expression* callAbs = new FunctionCall("abs", mult);
-	cout << callAbs->evaluate() << endl;
+	cout << "Результат: " << callAbs->evaluate() << endl;
 	delete callAbs;
 
 }
@@ -66,7 +66,7 @@ task3::Renderer* task3::Renderer::render(void)
 			int system_x = int(x - width / 2),
 				system_y = int(height / 2 - y);
 
-			if (x == width / 2 || y == height / 2) cout << "\' ";
+			if (x == int(width / 2) || y == int(height / 2)) cout << "\' ";
 			else if (y == height / 2 + 1 && x % 2 == 0 && abs(system_x) < XOY_NUMBER_RANGE)
 			{
 				cout << abs(system_x) << " ";
@@ -150,13 +150,20 @@ void lab7::task3::run(void)
 {
 
 	Shape* circle1 = new Circle(Vector3d(10, 10, 0), "circle1", 4);
-	Shape* circle2 = new Circle(Vector3d(13, 10, 0), "circle2", 4);
-	Shape* sphere1 = new Sphere(Vector3d(-9, 10, 0), "sphere1", 4);
-	Shape* sphere2 = new Sphere(Vector3d(-15, 0, 0), "sphere2", 6);
+	Sphere* sphere1 = new Sphere(Vector3d(-9, 10, 0), "sphere1", 4);
+	Shape* point = new Point(Vector3d(8, -7, 0), "point1");
 
-	Point* point = new Point(Vector3d(5, 5, 0), "point1");
+	cout << circle1->get_name() << " - периметр = " << circle1->calculate_perimeter() << endl;
+	cout << circle1->get_name() << " - площадь = " << circle1->calculate_area() << endl << endl;
 
-	Renderer renderer(vector<Shape*>{circle1, circle2, sphere1, sphere2, point}, 30, 30);
+	cout << point->get_name() << " - периметр = " << point->calculate_perimeter() << endl;
+	cout << point->get_name() << " - площадь = " << point->calculate_area() << endl << endl;
+
+	cout << sphere1->get_name() << " - периметр = " << sphere1->calculate_perimeter() << endl;
+	cout << sphere1->get_name() << " - площадь = " << sphere1->calculate_area() << endl;
+	cout << sphere1->get_name() << " - объем = " << sphere1->calculate_size() << endl;
+
+	Renderer renderer(vector<Shape*>{circle1, sphere1, point}, 49, 50);
 
 	renderer.get_info();
 	renderer.update()->render();
