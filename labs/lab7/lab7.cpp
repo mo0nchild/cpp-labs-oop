@@ -46,7 +46,7 @@ vector <task3::RenderStripe> task3::Renderer::update_layers_table(vector<Shape*>
 
 				table[render_system_y].insert(pair<int, ShapeLayer>(
 					shape->draw_shape().frame_position.x, layer
-					));
+				));
 			}
 		}
 	}
@@ -67,11 +67,11 @@ task3::Renderer* task3::Renderer::render(void)
 				system_y = int(height / 2 - y);
 
 			if (x == int(width / 2) || y == int(height / 2)) cout << "\' ";
-			else if (y == height / 2 + 1 && x % 2 == 0 && abs(system_x) < XOY_NUMBER_RANGE)
+			else if (y == int(height / 2) + 1 && x % 2 == 0 && abs(system_x) < XOY_NUMBER_RANGE)
 			{
 				cout << abs(system_x) << " ";
 			}
-			else if (x == width / 2 - 1 && y % 2 == 0 && abs(system_y) < XOY_NUMBER_RANGE)
+			else if (x == int(width / 2) - 1 && y % 2 == 0 && abs(system_y) < XOY_NUMBER_RANGE)
 			{
 				cout << abs(system_y) << " ";
 			}
@@ -146,11 +146,13 @@ task3::RenderLayer task3::Sphere::draw_shape(void) const
 	return RenderLayer(radius * 2, radius * 2 + 1, frame_position, layers);
 }
 
+uint16_t task3::Shape::current_id = 0;
+
 void lab7::task3::run(void)
 {
 
 	Shape* circle1 = new Circle(Vector3d(10, 10, 0), "circle1", 4);
-	Sphere* sphere1 = new Sphere(Vector3d(-9, 10, 0), "sphere1", 4);
+	Sphere* sphere1 = new Sphere(Vector3d(-9, -24, 0), "sphere1", 4);
 	Shape* point = new Point(Vector3d(8, -7, 0), "point1");
 
 	cout << circle1->get_name() << " - ןונטלוענ = " << circle1->calculate_perimeter() << endl;
@@ -161,7 +163,7 @@ void lab7::task3::run(void)
 
 	cout << sphere1->get_name() << " - ןונטלוענ = " << sphere1->calculate_perimeter() << endl;
 	cout << sphere1->get_name() << " - ןכמשאהü = " << sphere1->calculate_area() << endl;
-	cout << sphere1->get_name() << " - מבתול = " << sphere1->calculate_size() << endl;
+	cout << sphere1->get_name() << " - מבתול = " << sphere1->calculate_size() << endl << endl;
 
 	Renderer renderer(vector<Shape*>{circle1, sphere1, point}, 49, 50);
 
@@ -172,5 +174,7 @@ void lab7::task3::run(void)
 
 void lab7::lab(void) 
 {
+	// task1::run();
+	// task2::run();
 	task3::run();
 }

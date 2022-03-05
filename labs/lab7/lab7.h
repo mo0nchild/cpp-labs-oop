@@ -164,7 +164,8 @@ namespace lab7
 
 		struct Shape
 		{
-			explicit Shape(Vector3d center, string name) : center(center), name(name)
+			explicit Shape(Vector3d center, string name) 
+				: center(center), name(name), id(current_id++)
 			{ }
 			virtual ~Shape(void) { }
 
@@ -182,8 +183,9 @@ namespace lab7
 			virtual RenderLayer draw_shape(void) const = 0;
 			virtual Shape* clone(void) const = 0;
 
-			Vector3d get_position(void) const { return this->center; }
-			string get_name(void) const { return this->name; }
+			Vector3d get_position(void) const noexcept { return this->center; }
+			string get_name(void) const noexcept { return this->name; }
+			uint16_t get_id(void) const noexcept { return this->id; }
 
 			virtual string get_info(void) const
 			{
@@ -195,6 +197,9 @@ namespace lab7
 		protected:
 			Vector3d center;
 			string name;
+			uint16_t id;
+		private:
+			static uint16_t current_id;
 		};
 
 		class Renderer
