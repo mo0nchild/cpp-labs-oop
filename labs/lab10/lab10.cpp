@@ -8,15 +8,18 @@ void Renderer::calculate_motion(Ball* ball, mutex& mute, vector<int> rand_values
 	int16_t shift_rand = 0;
 	
 	mute.lock();
-	int pos_y = ball->get_position().y;
+	Vector2d pos = ball->get_position();
 	mute.unlock();
 
-	while (pos_y > border_x)
+	while (fabs(pos.y) < this->render_size.second 
+		&& fabs(pos.x) < this->render_size.first)
 	{
 		{
 			lock_guard<mutex> guard(mute);
-			if (shift_rand >= rand_values.size()) shift_rand = 0;
-			int x_shift = rand_values[shift_rand], y_shift = -1;
+			if (shift_rand >= rand_values.size() - 1) shift_rand = 0;
+			else shift_rand++;
+
+			int x_shift = rand_values[shift_rand], y_shift = rand_values[rand_values.size() - 1 - shift_rand];
 		
 			/*for (int i : rand_values) cout << i << "\t";
 			cout << endl;*/
@@ -26,7 +29,7 @@ void Renderer::calculate_motion(Ball* ball, mutex& mute, vector<int> rand_values
 				<< "\tdir_x: " << x_shift << "\tdir_y: " << y_shift << endl;*/
 
 			ball->move_to(Vector2d(x_shift, y_shift));
-			pos_y = ball->get_position().y;
+			pos = ball->get_position();
 		}
 
 		this_thread::sleep_for(chrono::milliseconds(1000));
@@ -97,17 +100,13 @@ void Renderer::begin(vector<CoolPriority> priority)
 		if (destroyed_balls == balls_size) break;
 
 		system("cls");
+		cout << "Осталось в живых: " << balls_size - destroyed_balls << endl;
 
 		cout << str_buffer.str() << endl;
 		for (int16_t y = this->render_size.second / 2; y >= -(this->render_size.second / 2); y--)
 		{
 			for (int16_t x = -(this->render_size.first / 2); x <= this->render_size.first / 2; x++)
 			{
-				if (y == this->border_x - 1) 
-				{
-					cout << "==";
-					continue;
-				}
 
 				if (check_location(x, y)) cout << "o ";
 				else cout << "  ";
