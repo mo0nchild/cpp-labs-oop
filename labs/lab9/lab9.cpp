@@ -143,7 +143,7 @@ void task1::run(void)
 	for (int i = 0; i < int_array_clone.size(); i++)
 	{
 		const auto a = int_array_clone[i];
-		cout << a.get_name() << endl;
+		cout << "Значение" << i << ":\t" << a.get_name() << endl;
 	}
 }
 
@@ -168,7 +168,7 @@ void task3::run(void)
 	ICloneable* copy = origin->clone();
 	delete origin;
 
-	cout << dynamic_cast<ValueHolder<int>*>(copy)->_data << endl;
+	cout << "Значение: " << dynamic_cast<ValueHolder<int>*>(copy)->_data << endl;
 	delete copy;
 }
 
@@ -179,14 +179,14 @@ void task4::run(void)
 	copy_n(doubles, ints, 4);
 	// теперь в массиве doubles содержатся
 	// элементы 1.0, 2.0, 3.0 и 4.0
-	for (int i = 0; i < 4; i++) cout << doubles[i] << endl;
+	for (int i = 0; i < 4; i++) cout << "Значение" << i + 1 << ":\t" << doubles[i] << endl;
 	cout << endl;
 
 	CustomTypeU origin[3] = { CustomTypeU(1, 12300), CustomTypeU(2,23411), CustomTypeU(3, 12959)};
 	CustomTypeT copies[3];
 
 	copy_n<CustomTypeT, CustomTypeU>(copies, origin, 3);
-	for (int i = 0; i < 3; i++) cout << copies[i].name << " " << copies[i].value << endl;
+	for (int i = 0; i < 3; i++) cout << "Значение" << i + 1 << ":\t" << copies[i].name << " " << copies[i].value << endl;
 }
 
 void task5::run(void) 
@@ -260,14 +260,14 @@ void task8::run(void)
 {
 	struct Dummy { };
 	typedef int type;
-	std::cout << SameType<int, int>::value << std::endl;
+	std::cout << "Значение: " << SameType<int, int>::value << std::endl;
 	// выведет 1, т. е. true
-	std::cout << SameType<int, type>::value << std::endl;
+	std::cout << "Значение: " << SameType<int, type>::value << std::endl;
 	// 1, type == int
-	std::cout << SameType<int, int&>::value << std::endl;
+	std::cout << "Значение: " << SameType<int, int&>::value << std::endl;
 	// 0, int и ссылка на int - различные типы
-	std::cout << SameType<Dummy, Dummy>::value << std::endl; // 1
-	std::cout << SameType<int, const int>::value << std::endl;
+	std::cout << "Значение: " << SameType<Dummy, Dummy>::value << std::endl; // 1
+	std::cout << "Значение: " << SameType<int, const int>::value << std::endl;
 
 	// 0, const - часть типа
 	// Определите шаблон SameType с двумя типовыми параметрами.
@@ -298,5 +298,5 @@ void task9::run(void)
 
 void lab9::lab(void) 
 {
-	task6::run();
+	task9::run();
 }

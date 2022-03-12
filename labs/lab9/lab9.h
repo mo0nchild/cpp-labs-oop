@@ -11,6 +11,7 @@
 #include <cstddef>
 #include <new>
 #include <functional>
+#include <malloc.h>
 
 #define DB_FILE_PATH ".\\labs\\lab9\\files\\input.txt"
 #define SEARCH_EXPRESSION "(?:\\s*\\[)\\s*([а-€ј-я\\w]+(?:\\s[а-€ј-я\\w]+)*)\\s*(?:\\]):\\s([а-€ј-я\\w\\-+().|:\\s]+);\\s*"
@@ -278,11 +279,6 @@ namespace lab9
 		template<class T, class U>
 		void copy_n(T* copy, U* origin, uint16_t size) 
 		{
-			size_t origin_size = sizeof(origin) / sizeof(U),
-				copy_size = sizeof(copy) / sizeof(T);
-
-			if (size > origin_size || size > copy_size) throw exception("–азмеры не соответсвуют");
-
 			for (uint16_t i = 0; i < size; i++) copy[i] = origin[i];
 		}
 
@@ -393,7 +389,8 @@ namespace lab9
 		template<class T>
 		void flatten(const Array<T>& arr, ostream& out) 
 		{
-			for (uint16_t i = 0; i < arr.size(); i++) out << arr[i] << endl;
+			for (uint16_t i = 0; i < arr.size(); i++) out << arr[i] << " ";
+			out << endl;
 		}
 
 		template<class T>

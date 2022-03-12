@@ -1,13 +1,13 @@
 ﻿#include <iostream>
 #include <locale>
 
-#include "labs/lab10/lab10.h"
+#include "labs/lab9/lab9.h"
 
 int main(void)
 {
 	setlocale(LC_ALL, "rus");
 
-	lab10::lab();
+	lab9::lab();
 
 	return 0;
 }
