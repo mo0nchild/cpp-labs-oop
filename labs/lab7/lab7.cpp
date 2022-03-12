@@ -151,8 +151,8 @@ uint16_t task3::Shape::current_id = 0;
 void lab7::task3::run(void)
 {
 
-	Shape* circle1 = new Circle(Vector3d(10, 10, 0), "circle1", 4);
-	Sphere* sphere1 = new Sphere(Vector3d(-9, -24, 0), "sphere1", 4);
+	Shape* circle1 = new Circle(Vector3d(10, 10, 0), "circle1", 8);
+	Sphere* sphere1 = new Sphere(Vector3d(-9, 10, 0), "sphere1", 4);
 	Shape* point = new Point(Vector3d(8, -7, 0), "point1");
 
 	cout << circle1->get_name() << " - периметр = " << circle1->calculate_perimeter() << endl;

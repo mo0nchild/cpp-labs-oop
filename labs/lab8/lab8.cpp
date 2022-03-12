@@ -36,15 +36,14 @@ void lab8::lab(void)
 	{
 		auto result = lab8::IntegerStreamRead(cin).get_value("Введите число: ");;
 		cout << "Результат: " << result << endl;
-		
 	}
-	catch (lab8::IntegerException int_error)
+	catch (const lab8::IntegerException& int_error)
 	{
 		cout << "Ошибка: " << int_error.what() << endl;
 		cout << "Состояние: " << int_error.get_error_state() << endl;
 		cout << "Статус: " << int_error.get_status() << endl;
 	}
-	catch (std::exception basic_error)
+	catch (const std::exception& basic_error)
 	{
 		cout << "Ошибка: " << basic_error.what() << endl;
 	}
