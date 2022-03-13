@@ -40,29 +40,23 @@ const bool task0::TextDataBase::sort_data(string key)
 {
 	vector<DbResult> data = this->get_data("");
 	if (data.size() == 0) return false;
-	
 	uint16_t size = data.size();
-
 	for (uint16_t i = 0; i < size - 1; i++)
 	{
 		for (uint16_t j = i + 1; j < size; j++)
 		{
 			if (data[i].find(key) == data[i].end()) swap<DbResult>(data[size-- - 1], data[i]);
 			if (data[j].find(key) == data[j].end()) swap<DbResult>(data[size-- - 1], data[j]);
-
 			if (size == i || size == j) continue;
-			
 			try 
 			{
 				int buffer_i = stoi(data[i][key]), buffer_j = stoi(data[j][key]);
-				if (buffer_i < buffer_j) swap<DbResult>(data[i], data[j]);
-				
+				if (buffer_i < buffer_j) swap<DbResult>(data[i], data[j]);	
 			}
 			catch (std::exception const&) { return false; }
 
 		}
 	}
-
 	this->file_stream = fstream(this->filename, ios::out);
 	if (file_stream.is_open()) 
 	{
@@ -71,11 +65,9 @@ const bool task0::TextDataBase::sort_data(string key)
 			for (auto k : i) file_stream << "[" << k.first << "]: " << k.second << ";\t";
 			file_stream << endl;
 		}
-
 		file_stream.close();
 		return true;
 	}
-
 	return false;
 }
 
@@ -296,7 +288,4 @@ void task9::run(void)
 	size = array_size(pointer);*/
 }
 
-void lab9::lab(void) 
-{
-	task0::run();
-}
+void lab9::lab(void) { task1::run(); }
