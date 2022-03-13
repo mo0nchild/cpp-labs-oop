@@ -178,17 +178,15 @@ void task4::run(void)
 	CustomTypeT copies[3];
 
 	copy_n<CustomTypeT, CustomTypeU>(copies, origin, 3);
-	for (int i = 0; i < 3; i++) cout << "Значение" << i + 1 << ":\t" << copies[i].name << " " << copies[i].value << endl;
+	for (int i = 0; i < 3; i++) 
+		cout << "Значение" << i + 1 << ":\t" << copies[i].name << " " << copies[i].value << endl;
 }
 
 void task5::run(void) 
 {
-	struct Greater
-	{
-		bool operator()(int a, int b) { return b < a; }
-	};
-
+	struct Greater { bool operator()(int a, int b) { return b < a; } };
 	Array<int> ints(3);
+
 	ints[0] = 10;
 	ints[1] = 2;
 	ints[2] = 15;
@@ -204,7 +202,6 @@ void task5::run(void)
 
 	Student older = minimum<Student>(students, Student::comparator);
 	cout << "name: " << older.get_name() << endl;
-
 }
 
 void task6::run(void) 
@@ -241,8 +238,8 @@ void task7::run(void)
 
 	try 
 	{
-		const string* caster = data.cast<string>();
-		if (caster) cout << *caster << endl;
+		const int* caster = data.cast<int>();
+		if (caster) cout << "Занчение: " << *caster << endl;
 		else cout << "Преобразование не удалось\n";
 	}
 	catch (exception& error) { cout << error.what() << endl; }
@@ -273,19 +270,14 @@ void task9::run(void)
 
 	cout << "value size: " << size << endl;
 
-	struct Student 
-	{
-		string name;
-		int age;
-	};
+	struct Student { string name; int age; };
 
 	Student data[3] = { {"mike1", 10}, {"frenk", 12}, {"jane", 32} };
 
 	size = array_size(data);
 	cout << "data size: " << size << endl;
-
 	/*int* pointer = &value[0];
 	size = array_size(pointer);*/
 }
 
-void lab9::lab(void) { task1::run(); }
+void lab9::lab(void) { task9::run(); }

@@ -157,7 +157,6 @@ namespace lab9
 			T* myArray;
 			size_t n;
 		public:
-			// Список операций:
 			explicit Array(size_t size = 0, const T& value = T()) : n(size)
 				// конструктор класса, который создает
 				// Array размера size, заполненный значениями
@@ -177,9 +176,7 @@ namespace lab9
 			{
 				this->arrayBuffer = new char[n * sizeof(T)];
 				this->myArray = (T*)arrayBuffer;
-
-				for (int i = 0; i < n; i++)new(myArray + i) T(mas[i]);
-				
+				for (int i = 0; i < n; i++)new(myArray + i) T(mas[i]);	
 			}
 			~Array()
 				// деструктор, если он вам необходим.
@@ -187,8 +184,7 @@ namespace lab9
 				for (int i = 0; i < n; i++) this->myArray[i].~T();
 				delete[] arrayBuffer;
 			}
-			Array& operator=(const Array& mas)
-				// оператор присваивания.
+			Array& operator=(const Array& mas) // оператор присваивания.
 			{ 
 				this->~Array();
 				this->n = mas.size(); 
@@ -196,11 +192,7 @@ namespace lab9
 				this->arrayBuffer = new char[n * sizeof(T)];
 				this->myArray = (T*)arrayBuffer;
 
-				for (int i = 0; i < n; i++) 
-				{
-					new(myArray + i) T(mas[i]);
-				}
-
+				for (int i = 0; i < n; i++) new(myArray + i) T(mas[i]);
 				return *this;
 			}
 			// две версии оператора доступа по индексу.
@@ -261,7 +253,8 @@ namespace lab9
 		{
 			string name;
 			int value;
-			explicit CustomTypeT(string name = "none", int value = 1) : name(name), value(value) { }
+			explicit CustomTypeT(string name = "none", int value = 1) 
+				: name(name), value(value) { }
 		};
 
 		struct CustomTypeU
@@ -293,7 +286,7 @@ namespace lab9
 			string get_name(void) const noexcept { return name; }
 			int get_age(void) const noexcept { return age; }
 
-			static bool comparator(Student value1, Student value2) 
+			static bool comparator(Student value1, Student value2)
 			{
 				return value1.age > value2.age;
 			}
@@ -323,24 +316,20 @@ namespace lab9
 			{
 				delete[] this->data_;
 			}
-
 			Array& operator=(Array other);
 			void swap(Array& other);
 
 			size_t size() const { return this->size_; }
-
 			T& operator[](size_t idx)
 			{
 				if (idx >= size_) throw exception("Индекс вне доступного диапазона массива");
 				return this->data_[idx];
 			}
-
 			const T& operator[](size_t idx) const
 			{
 				if (idx >= size_) throw exception("Индекс вне доступного диапазона массива");
 				return this->data_[idx];
 			}
-
 		private:
 			size_t size_;
 			T* data_;
@@ -414,7 +403,6 @@ namespace lab9
 			// без параметров, чтобы работал следующий код:
 			// Any empty; // empty ничего не хранит
 			explicit Any() : value(nullptr) { }
-
 			// В классе Any должен быть шаблонный конструктор от одного
 			// параметра, чтобы можно было создавать объекты типа Any,
 			// например, следующим образом:
@@ -422,15 +410,12 @@ namespace lab9
 			template<class T>
 			explicit Any(T value) : value(new ValueHolder<T>(value))
 			{ }
-
 			// Деструктор: выделенные ресурсы нужно освободить.
 			virtual ~Any() { delete value; }
-			
 			// В классе Any также должен быть конструктор копирования (вам
 			// поможет метод clone интерфейса ICloneable)
 			explicit Any(const Any& origin) : value(origin.value->clone())
 			{ }
-
 			// В классе должен быть оператор присваивания и/или шаблонный
 			// оператор присваивания, чтобы работал следующий код:
 			// Any copy(i); // copy хранит 10, как и i
@@ -444,7 +429,6 @@ namespace lab9
 
 				return *this;
 			}
-
 			Any& operator=(const Any& obj)
 			{
 				delete this->value;
@@ -452,7 +436,6 @@ namespace lab9
 
 				return *this;
 			}
-
 			// Чтобы получать хранимое значение, определите в классе Any
 			// шаблонный метод cast, который возвращает указатель на
 			// хранимое значение, или нулевой указатель в случае
@@ -469,12 +452,9 @@ namespace lab9
 				if (!value) throw exception("Пустое значение");
 
 				ValueHolder<T>* buffer = dynamic_cast<ValueHolder<T>*>(value);
-				if (buffer) return &buffer->_data;
-				
+				if (buffer) return &buffer->_data;	
 				return 0;
 			}
-
-
 		};
 		void run(void);
 	}

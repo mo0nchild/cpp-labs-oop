@@ -34,7 +34,7 @@ void lab8::lab(void)
 {
 	try 
 	{
-		auto result = lab8::IntegerStreamRead(cin).get_value("¬ведите число: ");;
+		auto result = lab8::IntegerStreamRead(cin).get_value("¬ведите число: ");
 		cout << "–езультат: " << result << endl;
 	}
 	catch (const lab8::IntegerException& int_error)

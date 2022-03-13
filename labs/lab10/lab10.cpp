@@ -11,15 +11,15 @@ void Renderer::calculate_motion(Ball* ball, mutex& mute, vector<int> rand_values
 	Vector2d pos = ball->get_position();
 	mute.unlock();
 
-	while (fabs(pos.y) < this->render_size.second 
-		&& fabs(pos.x) < this->render_size.first)
+	while ((fabs(pos.y) < this->render_size.second - 1 && pos.y > this->border_x)
+		&& fabs(pos.x) < this->render_size.first - 1)
 	{
 		{
 			lock_guard<mutex> guard(mute);
 			if (shift_rand >= rand_values.size() - 1) shift_rand = 0;
 			else shift_rand++;
 
-			int x_shift = rand_values[shift_rand], y_shift = rand_values[rand_values.size() - 1 - shift_rand];
+			int x_shift = rand_values[shift_rand], y_shift = rand_values[rand_values.size() - 1 - shift_rand];;
 		
 			/*for (int i : rand_values) cout << i << "\t";
 			cout << endl;*/
@@ -31,10 +31,8 @@ void Renderer::calculate_motion(Ball* ball, mutex& mute, vector<int> rand_values
 			ball->move_to(Vector2d(x_shift, y_shift));
 			pos = ball->get_position();
 		}
-
-		this_thread::sleep_for(chrono::milliseconds(1000));
+		this_thread::sleep_for(chrono::milliseconds(400));
 	} 
-
 	ball->set_active(!ball->get_active());
 }
 
@@ -77,7 +75,8 @@ void Renderer::begin(vector<CoolPriority> priority)
 		for (auto o: this->balls)
 		{
 			Vector2d pos = o->get_position();
-			if ((int16_t)pos.x == x && (int16_t)pos.y == y) result = true;
+			if ((int16_t)pos.x == x && (int16_t)pos.y == y && o->get_active()) 
+				result = true;
 		}
 		mute.unlock();
 
@@ -105,9 +104,9 @@ void Renderer::begin(vector<CoolPriority> priority)
 		cout << str_buffer.str() << endl;
 		for (int16_t y = this->render_size.second / 2; y >= -(this->render_size.second / 2); y--)
 		{
+			if(y + 1 == this->border_x) cout << str_buffer.str() << endl;
 			for (int16_t x = -(this->render_size.first / 2); x <= this->render_size.first / 2; x++)
 			{
-
 				if (check_location(x, y)) cout << "o ";
 				else cout << "  ";
 			}
@@ -115,7 +114,7 @@ void Renderer::begin(vector<CoolPriority> priority)
 		}
 		cout << str_buffer.str() << endl;
 
-		this_thread::sleep_for(chrono::milliseconds(800));
+		this_thread::sleep_for(chrono::milliseconds(400));
 	}
 
 	for (auto& i: _rendering) i->join();
@@ -127,8 +126,8 @@ void lab10::lab(void)
 	srand(time(0));
 
 	const Vector2d begin_point(0, 0);
-	const double down_border_x = -18;
-	const int N = 40, RANGE = 60;
+	const double down_border_x = -8;
+	const int N = 20, RANGE = 10;
 	
 	vector<CoolPriority> priotiries;
 	vector<Ball*> balls;
@@ -139,5 +138,5 @@ void lab10::lab(void)
 		priotiries.push_back(CoolPriority::ABOVE_NORMAL);
 	}
 
-	Renderer(balls, down_border_x, pair<int, int>(60, 40)).begin(priotiries);
+	Renderer(balls, down_border_x, pair<int, int>(40, 30)).begin(priotiries);
 }

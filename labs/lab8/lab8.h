@@ -38,11 +38,8 @@ namespace lab8
 		istream* _stream;
 
 	public: 
-		explicit IntegerStreamRead(istream& stream)
-			: _stream(&stream) { }
-
+		explicit IntegerStreamRead(istream& stream): _stream(&stream) { }
 		int get_value(string message) const;
-		
 	};
 
 	void lab(void);
