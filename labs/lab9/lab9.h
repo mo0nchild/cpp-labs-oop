@@ -11,10 +11,9 @@
 #include <cstddef>
 #include <new>
 #include <functional>
-#include <malloc.h>
 
-#define DB_FILE_PATH ".\\labs\\lab9\\files\\input.txt"
-#define SEARCH_EXPRESSION "(?:\\s*\\[)\\s*([à-ÿÀ-ß\\w]+(?:\\s[à-ÿÀ-ß\\w]+)*)\\s*(?:\\]):\\s([à-ÿÀ-ß\\w\\-+().|:\\s]+);\\s*"
+#define DB_FILE_PATH		R"(.\labs\lab9\files\input.txt)"
+#define SEARCH_EXPRESSION	R"((?:\s*\[)\s*([à-ÿÀ-ß\w]+(?:\s[à-ÿÀ-ß\w]+)*)\s*(?:\]):\s([à-ÿÀ-ß\w\-+().|:\s]+);\s*)"
 
 namespace lab9 
 {

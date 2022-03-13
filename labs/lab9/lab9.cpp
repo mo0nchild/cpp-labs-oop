@@ -298,5 +298,5 @@ void task9::run(void)
 
 void lab9::lab(void) 
 {
-	task9::run();
+	task0::run();
 }
